@@ -2,7 +2,9 @@
 module.exports = {
   getUser: getUser,
   getUsers: getUsers,
-  newUser: newUser
+  newUser: newUser,
+  newPost: newPost,
+  getUserPosts:getUserPosts
 }
 
 function getUsers (connection) {
@@ -14,6 +16,12 @@ function getUser (id, connection) {
     .join("profiles", "users.id", "=", "user_id")
     .where('id', id)
     .first()
+}
+
+
+function getUserPosts (id, connection) {
+  return connection('posts')
+    .where('user_id', id)
 }
 
 function newUser(data, connection){
@@ -28,4 +36,9 @@ function newUser(data, connection){
       return connection('profiles')
       .insert(newProfileObject)//finally update and add the new fear to the table from the newProfileObject
     })
+}
+
+function newPost(newPost, connection) {
+  return connection("posts")
+  .insert(newPost)
 }
